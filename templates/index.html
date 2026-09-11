@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Financial Behavior</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2, h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .submit-btn {
+            grid-column: span 2;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        /* Aligned Submitted Data Styles */
+        .submitted-data-section {
+            margin-top: 30px;
+            border-top: 2px solid #e9ecef;
+            padding-top: 20px;
+        }
+        .submitted-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .data-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px 12px;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+        }
+        .data-key {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: bold;
+            text-transform: capitalize;
+            margin-bottom: 4px;
+        }
+        .data-value {
+            font-size: 15px;
+            color: #212529;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Customer Financial Behavior Segmentation</h2>
+    <form action="/predict" method="post">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="Annual_Income">Annual Income ($)</label>
+                <input type="number" step="any" name="Annual_Income" required value={{ form_data['Annual_Income'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Monthly_Spending">Monthly Spending ($)</label>
+                <input type="number" step="any" name="Monthly_Spending" required value={{ form_data['Monthly_Spending'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Savings">Savings ($)</label>
+                <input type="number" step="any" name="Savings" required value={{ form_data['Savings'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Checking_Balance">Checking Balance ($)</label>
+                <input type="number" step="any" name="Checking_Balance" required value={{ form_data['Checking_Balance'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Credit_Score">Credit Score</label>
+                <input type="number" step="any" name="Credit_Score" required value={{ form_data['Credit_Score'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Credit_Card_Spending">Credit Card Spending ($)</label>
+                <input type="number" step="any" name="Credit_Card_Spending" 
+                    required value={{ form_data['Credit_Card_Spending'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Loan_Amount">Loan Amount ($)</label>
+                <input type="number" step="any" name="Loan_Amount" required value={{ form_data['Loan_Amount'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Investment_Amount">Investment Amount ($)</label>
+                <input type="number" step="any" name="Investment_Amount" required value={{ form_data['Investment_Amount'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Debt_to_Income_Ratio">Debt-to-Income Ratio</label>
+                <input type="number" step="any" name="Debt_to_Income_Ratio" required value={{ form_data['Debt_to_Income_Ratio'] }}>
+            </div>
+            <div class="form-group">
+                <label for="Transaction_Frequency">Transaction Frequency (Monthly)</label>
+                <input type="number" step="any" name="Transaction_Frequency" required value={{ form_data['Transaction_Frequency'] }}>
+            </div>
+            <button type="submit" class="submit-btn">Predict Cluster</button>
+        </div>
+    </form>
+
+    {% if prediction_text %}
+        <div class="result">{{ prediction_text }}</div>
+    {% endif %}
+
+    {% if submitted_data %}
+        <div class="submitted-data-section">
+            <h3>Submitted Parameters</h3>
+            <div class="submitted-grid">
+                {% for key, value in submitted_data.items() %}
+                    <div class="data-card">
+                        <span class="data-key">{{ key.replace('_', ' ') }}</span>
+                        <span class="data-value">{{ value }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+    
+</body>
+</html>
